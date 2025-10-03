@@ -1,0 +1,120 @@
+'''Program to test HOM interferometry simulation using Neuroptica layers.
+Current layer to test is an MZI mesh with all components in bar state.
+'''
+import numpy as np
+import scipy
+import matplotlib.pyplot as plt
+import sys
+from matplotlib import rc
+from matplotlib.ticker import FormatStrFormatter
+from pytictoc import TicToc
+
+sys.path.append('../')
+from neuroptica.component_layers_new import MZIDelayLayer, OpticalMeshNew
+
+def transmittance(mesh, idx_in1, idx_in2, idx_out1, idx_out2):
+        transfer = mesh.get_transfer_matrix()
+        c11 = transfer[idx_in1,idx_out1]
+        c12 = transfer[idx_in1,idx_out2]
+        c21 = transfer[idx_in2,idx_out1]
+        c22 = transfer[idx_in2,idx_out2]
+        
+        coinc = (np.abs(c12)**2)*(np.abs(c21)**2) + (np.abs(c11)**2)*(np.abs(c22)**2) + \
+                (np.conjugate(c11)*np.conjugate(c22)*c12*c21 + np.conjugate(c12)*np.conjugate(c21)*c11*c22)
+        prob_a = (np.abs(c12)**2)*(np.abs(c22)**2) + (np.abs(c11)**2)*(np.abs(c21)**2)
+        prob_b = (np.abs(c11)**2)*(np.abs(c21)**2) + (np.abs(c12)**2)*(np.abs(c22)**2)
+        
+        tot_prob = coinc + prob_a + prob_b
+        return tot_prob
+
+def main():
+    timer = TicToc()
+
+    #Mesh size
+    N = 4
+    #Create component layers
+    layers = []
+    for i in range(N-1):
+        if i % 2 == 0:
+            #Create even component layer
+            layers.append(MZIDelayLayer.from_waveguide_indices(MZIDelayLayer,i,N,list(range(N)),np.full(int(N/2),np.pi),np.full(int(N/2),np.pi)))
+        else:
+            layers.append(MZIDelayLayer.from_waveguide_indices(MZIDelayLayer,i,N,list(range(1,N-1)),np.full(int(N/2)-1,np.pi),np.full(int(N/2)-1,np.pi)))
+
+    mesh = OpticalMeshNew(N,layers)
+    
+    timer.tic()
+
+    max_dB = 3
+    step_size_dB = 0.1
+    n_dB = int(max_dB/step_size_dB) + 1
+    losses_dB = np.linspace(0,max_dB,n_dB)
+    
+    transmittances = np.zeros(n_dB)
+
+    n = 0 #MZI number
+
+    #for layer in mesh.layers:
+        #for mzi in layer:
+            #print(np.round(mzi.get_transfer_matrix(),2))    
+    
+    for layer in mesh.layers:
+        for mzi in layer:
+
+            n += 1
+
+            mzi.theta = np.pi/2 #Set MZI under test to 50:50 BS
+            mzi.phi = 0
+            
+            for i in range(n_dB):
+                for layer_cur in mesh.layers:
+                    for mzi_cur in layer_cur:
+                        mzi_cur.loss_dB_cur = losses_dB[i]
+    
+                transmittances[i] = transmittance(mesh, mzi.m, mzi.n, mzi.m, mzi.n)
+                print(transmittances[i])
+
+            #Plotting code from ONN_Simulation_Class.py
+            labels_size = 30
+            legend_size = 30
+            tick_size = 28
+            contour_color = (0.36, 0.54, 0.66)
+            contour_color2 = 'black'
+            contour_linewidth = 3.5
+            tick_fmt = '%.2f'
+            # plt.rcParams['font.family'] = 'STIXGeneral'
+            # rc('font', weight='bold',**{'family':'serif','serif':['Times New Roman']})
+            # rc('text', usetex=True)
+            # the above settings has no effect... has to use preamble to change fonts
+            rc('text.latex', preamble=r'\usepackage{mathptmx}')
+
+            # Plot Loss + Phase uncert accuracies
+            # plt.pcolor(self.loss_dB, self.phase_uncert_theta, self.accuracy_LPU, vmin=100/(self.N+1)*0, vmax=100, cmap=cmap, rasterized=True)
+            plt.figure(figsize=(6.95, 5.03)) # compress the graph (around) quarter in size, by cutting top half and compress horizontally
+            plt.plot(losses_dB, transmittances)
+            
+            ax = plt.gca()
+            ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+            ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+            ax.tick_params(axis='both', which='minor', labelsize=tick_size)
+            ax.tick_params(axis='both', which='major', labelsize=tick_size)
+
+            plt.xlabel('Loss/MZI (dB)', fontsize=labels_size)
+            plt.ylabel(r'Transmittance', fontsize=labels_size)
+            #cbar = plt.colorbar()
+            #cbar.ax.tick_params(labelsize=tick_size)
+            #cbar.set_label('Fidelity', fontsize=labels_size)
+            # plt.title(f'{self.N}$\\times${self.N} {self.topology}', fontsize=labels_size)
+            plt.tight_layout()
+            #plt.show()
+
+            plt.savefig(f'4x4_Clements/4x4_absolute_loss_Clements_transmittance_no_int_MZI_{n}.png')
+
+            mzi.theta = np.pi #Restore bar state to MZI under test
+            mzi.phi = np.pi
+
+    timer.toc()
+
+    
+if __name__ == '__main__':
+    main()
