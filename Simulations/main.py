@@ -362,10 +362,11 @@ def main():
                     best_onn.save_correct_classified_samples(best_model, zeta=onn.zeta)
                     best_onn.save_correct_classified_samples(best_model, zeta=2*onn.zeta)
 
-                    # To plot scattermatrix of dataset
-                    # axes = plot_scatter_matrix(onn.X, onn.y,  figsize=(15, 15), label='X', start_at=0, fontsz=54)
-                    # plt.savefig(onn.FOLDER + '/scatterplot.pdf')
                     break
+                
+    # To plot scattermatrix of dataset
+    axes = plot_scatter_matrix(onn.X, onn.y,  figsize=(15, 15), label='X', start_at=0, fontsz=54)
+    plt.savefig(onn.FOLDER + '/scatterplot.pdf')
 
 if __name__ == '__main__':
      main()
