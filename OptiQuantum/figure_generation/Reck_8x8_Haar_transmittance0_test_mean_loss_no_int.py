@@ -8,7 +8,7 @@ import sys
 from matplotlib import rc
 from matplotlib.ticker import FormatStrFormatter
 from pytictoc import TicToc
-from strawberryfields.decompositions_new import triangular_symmetric
+from modifiedstrawberry.decompositions_new_only import triangular_symmetric
 
 sys.path.append('../../')
 from neuroptica.layers_new import flipped_ReckLayer
