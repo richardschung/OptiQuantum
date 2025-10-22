@@ -1,5 +1,14 @@
+from itertools import groupby
+from collections import defaultdict
+
+import numpy as np
+from scipy.linalg import block_diag, sqrtm, polar, schur
+from thewalrus.quantum import adj_scaling
+from thewalrus.symplectic import sympmat, xpxp_to_xxpp
+from strawberryfields.decompositons import nullMZ, mach_zehnder 
+
 def triangular_MZ(V, tol=1e-11):
-    """From Xanadu Strawberryfields"""
+    """Based on Xanadu Strawberryfields"""
     r"""Triangular decomposition of a unitary matrix due to Reck et al.
 
     See :cite:`reck1994` for more details and :cite:`clements2016` for details on notation.
@@ -31,6 +40,7 @@ def triangular_MZ(V, tol=1e-11):
     return list(reversed(tlist)), np.diag(localV), None
 
 def triangular_symmetric(V, tol=1e-11):
+    """Based on Xanadu Strawberryfields"""
     r"""Decomposition of a unitary into an array of symmetric beamsplitters.
 
     This decomposition starts with the output from :func:`~.triangular_MZ`
