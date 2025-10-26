@@ -61,7 +61,7 @@ def main():
     # plt.pcolor(self.loss_dB, self.phase_uncert_theta, self.accuracy_LPU, vmin=100/(self.N+1)*0, vmax=100, cmap=cmap, rasterized=True)
     plt.figure(figsize=(6.95, 5.03)) # compress the graph (around) quarter in size, by cutting top half and compress horizontally
     plt.plot(lengths,coincs,label='Simulated HOM curve')
-    plt.plot(quix[0],quix[1],'ro',label=r'Experimental data$^\dagger$')
+    plt.plot(quix[0],quix[1],'ro',label='Experimental data[1]')
     
     ax = plt.gca()
     ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
@@ -81,7 +81,7 @@ def main():
 
     timer.toc()
     
-    plt.savefig(f'figures_set1/HOM_vs_Quix_v2.png')
+    plt.savefig(f'figures_set1/HOM_vs_Quix_v3.png')
 
 if __name__ == '__main__':
     main()
