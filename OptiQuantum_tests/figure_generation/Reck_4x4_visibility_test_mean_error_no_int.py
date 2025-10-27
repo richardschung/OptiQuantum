@@ -7,6 +7,8 @@ from matplotlib.ticker import FormatStrFormatter
 from pytictoc import TicToc
 
 sys.path.append('../../')
+sys.path.append('../')
+
 from neuroptica.layers_new import ReckLayer
 from metrics import visibility
 
