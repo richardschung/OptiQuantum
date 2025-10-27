@@ -54,8 +54,8 @@ def main():
                     for sample in range(n_samples):
                         for layer_cur in mesh.layers:
                             for mzi_cur in layer_cur:
-                                mzi_cur.theta = mzi.theta0 + phases[i]
-                                mzi_cur.phi = mzi.phi0 + phases[j]
+                                mzi_cur.theta = mzi_cur.theta0 + phases[i]
+                                mzi_cur.phi = mzi_cur.phi0 + phases[j]
                                 mzi_cur.randomize_errors()
 
                         visib_samples[sample] = visibility(mesh, mzi.m, mzi.n, mzi.m, mzi.n)
