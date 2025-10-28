@@ -5,7 +5,6 @@ import sys
 from matplotlib import rc
 from matplotlib.ticker import FormatStrFormatter
 from pytictoc import TicToc
-from strawberryfields.decompositions_new import triangular_symmetric
 
 sys.path.append('../../')
 from neuroptica.layers_new import ClementsLayer
@@ -81,7 +80,7 @@ def main():
 
     timer.toc()
     
-    plt.savefig(f'figures_set1/HOM_vs_Quix_v3.png')
+    plt.savefig(f'figures_set1/Update October 26/HOM_vs_Quix_v3.eps')
 
 if __name__ == '__main__':
     main()

@@ -9,7 +9,8 @@ from xmlrpc.client import boolean
 import numpy as np
 from numba import jit, prange
 
-from neuroptica.components_new import MZI, MZI_delay, OpticalComponent, PhaseShifter, _get_mzi_partial_transfer_matrices
+from OptiQuantum.modified_neuroptica.components_new import MZI, MZI_delay, OpticalComponent, PhaseShifter, _get_mzi_partial_transfer_matrices
+
 from neuroptica.settings import NP_COMPLEX
 
 def mzi_uncertainties(p_waveguide_indices, p_ref_value_theta, p_ref_value_phi, p_i):
@@ -913,4 +914,10 @@ class OpticalMeshNew(OpticalMesh):
     def get_indiv_transfer_matrices(self, add_uncertainties=True, add_loss=True) -> np.ndarray:
         return [layer.get_indiv_transfer_matrices() for layer in reversed(self.layers)]
         #return [layer.get_indiv_transfer_matrices() for layer in self.layers]
+
+    def randomize_errors(self):
+        for layer in self.layers:
+            for component in layer:
+                if isinstance(component, MZI_delay):
+                    component.randomize_errors()
     
