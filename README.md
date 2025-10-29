@@ -16,7 +16,7 @@
 4. Circuit fidelity and biphoton transmittance should be evaluated by running the code in section 1.  HOM interferometry and HOM visibility should be evaluated by running the code in section 2.
 
 An example of the HOM interferometry simulation:
-[HOM Interferometry](OptiQuantum_img/HOM_interferometry.png)
+![HOM Interferometry](OptiQuantum_img/HOM_interferometry.png)
 
 ## Advanced Notes
 `neuroptica` and `Strawberry Fields` are used to evaluate the transfer matrix.  Currently, the metric evaluation functions are dependent on transfer matrix calculation functions from classes in `neuroptica`.  However, `Strawberry Fields` is never required during metric evaluation.  This means that `Strawberry Fields` can be bypassed if you already know the required phases to program onto MZIs in a mesh.
