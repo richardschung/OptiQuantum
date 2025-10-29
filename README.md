@@ -1,6 +1,6 @@
 `OptiQuantum` is a physics-based modeling platform written in python for evaluating quantum effects in optical processor meshes.  The physics-based framework itself can perform modeling for any circuit with a well-defined transfer matrix.  However, `neuroptica` and `Strawberry Fields` are incorporated to characterize effects in an optical processor.  The repository itself was forked from the [Xoreus version of `neuroptica`](https://github.com/Xoreus/neuroptica) with OptiQuantum added to the `neuroptica` framework. 
 
-`OptiQuantum` requires that python>=3.6 and python<=3.10
+`OptiQuantum` requires that python >=3.6 and python <=3.10
 `Optiquantum` requires the following packages:
     `numpy`,
     `scipy`,
@@ -15,8 +15,11 @@
 3. Determine which metric(s) to evaluate (HOM interferometry, HOM visibility, circuit fidelity, biphoton transmittance)
 4. Circuit fidelity and biphoton transmittance should be evaluated by running the code in section 1.  HOM interferometry and HOM visibility should be evaluated by running the code in section 2.
 
+An example of the HOM interferometry simulation:
+[HOM Interferometry] (OptiQuantum_img/HOM_interferometry.png )
+
 ## Advanced Notes
-`neuroptica` and `Strawberry Fields` are used to evaluate the transfer matrix.  Currently, the metric evaluation functions are dependent on transfer matrix calculation functions from classes in `neuroptica`.  This means that `Strawberry Fields` can be bypassed if you already know the required phases to program onto MZIs in a mesh.
+`neuroptica` and `Strawberry Fields` are used to evaluate the transfer matrix.  Currently, the metric evaluation functions are dependent on transfer matrix calculation functions from classes in `neuroptica`.  However, `Strawberry Fields` is never required during metric evaluation.  This means that `Strawberry Fields` can be bypassed if you already know the required phases to program onto MZIs in a mesh.
 
 ## Authors
 `OptiQuantum` was written by [Richard Chung](https://github.com/richardschung).
