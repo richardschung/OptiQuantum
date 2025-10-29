@@ -65,7 +65,7 @@ def fidelity(mesh, ideal = None):
     fidel = abs(np.trace(U_H@T)/np.sqrt(np.trace(U_H@U)*np.trace(T_H@T)))**2
     return fidel
 
-def transmittance(mesh, idx_in1, idx_in2, idx_out1, idx_out2):
+def transmittance(mesh, idx_in1, idx_in2, idx_out1, idx_out2, add_uncertainties=True, add_loss=False):
     '''Function for calculating biphoton transmittance.
     :param mesh: The Neuroptica mesh under simulation
     :param idx_in1: Waveguide index of the first input path
@@ -74,7 +74,7 @@ def transmittance(mesh, idx_in1, idx_in2, idx_out1, idx_out2):
     :param idx_out2: Waveguide index of the second output path
     '''
 
-    transfer = mesh.get_transfer_matrix()
+    transfer = mesh.get_transfer_matrix(add_uncertainties, add_loss)
     c11 = transfer[idx_out1,idx_in1]
     c12 = transfer[idx_out1,idx_in2]
     c21 = transfer[idx_out2,idx_in1]

@@ -10,9 +10,10 @@ Edit: 2022.10.13 by Bokun Zhao (bokun.zhao@mail.mcgill.ca)
 from math import floor
 import numpy as np
 
-from neuroptica.component_layers_new import MZIDelayLayer, OpticalMeshNew, PhaseShifterLayer
 from neuroptica.nonlinearities import Nonlinearity
 from neuroptica.settings import NP_COMPLEX
+from OptiQuantum.modified_neuroptica.component_layers_new import MZIDelayLayer, OpticalMeshNew, PhaseShifterLayer
+from OptiQuantum.modified_neuroptica.components_new import MZI_delay
 
 class NetworkLayer:
     '''Represents a logical layer in a simulated optical neural network. A NetworkLayer is different from a
