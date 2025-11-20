@@ -5,7 +5,6 @@ import sys
 from matplotlib import rc
 from matplotlib.ticker import FormatStrFormatter
 from pytictoc import TicToc
-from strawberryfields.decompositions_new import triangular_symmetric
 
 sys.path.append('../../')
 from neuroptica.layers_new import flipped_ReckLayer
@@ -58,7 +57,7 @@ def main():
     ax.tick_params(axis='both', which='major', labelsize=12)
 
     plt.xlabel('Mean Loss(dB)', fontsize=labels_size)
-    plt.ylabel(r'Transmittance to ' + '\n' + r'Outputs 7 and 8', fontsize=labels_size)
+    plt.ylabel(r'Normalized Transmittance' + '\n' + r'to Outputs 7 and 8', fontsize=labels_size)
     ax.legend(loc='lower left')
     #cbar = plt.colorbar()
     #cbar.ax.tick_params(labelsize=tick_size)
@@ -69,7 +68,7 @@ def main():
 
     timer.toc()
     
-    plt.savefig(f'figures_set1/transmittance_comparison_out78_V2.png')
+    plt.savefig(f'figures_set1/Update October 30/transmittance_comparison_out78_V3.png')
 
 if __name__ == '__main__':
     main()

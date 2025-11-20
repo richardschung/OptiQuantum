@@ -225,7 +225,7 @@ class OpticalMeshNetworkLayer(NetworkLayer):
         :param initializer: optional initializer method (WIP)
         '''
         super().__init__(input_size, output_size, initializer=initializer)
-        self.mesh: OpticalMesh = None
+        self.mesh: OpticalMeshNew = None
 
     def forward_pass(self, X: np.ndarray, cache_fields=False, use_partial_vectors=False) -> np.ndarray:
         raise NotImplementedError('forward_pass() must be overridden in child class!')

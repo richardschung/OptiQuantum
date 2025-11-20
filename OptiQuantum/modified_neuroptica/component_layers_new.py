@@ -9,6 +9,7 @@ from xmlrpc.client import boolean
 import numpy as np
 from numba import jit, prange
 
+
 from OptiQuantum.modified_neuroptica.components_new import MZI, MZI_delay, OpticalComponent, PhaseShifter, _get_mzi_partial_transfer_matrices
 
 from neuroptica.settings import NP_COMPLEX

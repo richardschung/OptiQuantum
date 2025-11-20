@@ -5,7 +5,7 @@ import numpy as np
 from scipy.linalg import block_diag, sqrtm, polar, schur
 from thewalrus.quantum import adj_scaling
 from thewalrus.symplectic import sympmat, xpxp_to_xxpp
-from strawberryfields.decompositons import nullMZ, mach_zehnder 
+from strawberryfields.decompositions import nullMZ, mach_zehnder 
 
 def triangular_MZ(V, tol=1e-11):
     """Based on Xanadu Strawberryfields"""

@@ -10,7 +10,7 @@ from numba import jit
 from numpy import pi
 import random
 import scipy
-import sys
+
 
 from neuroptica.settings import NP_COMPLEX
 

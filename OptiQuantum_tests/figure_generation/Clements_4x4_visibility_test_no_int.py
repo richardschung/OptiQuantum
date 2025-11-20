@@ -10,44 +10,9 @@ from matplotlib.ticker import FormatStrFormatter
 from pytictoc import TicToc
 
 sys.path.append('../../')
+sys.path.append('../')
 from neuroptica.layers_new import ClementsLayer
-
-def visibility(mesh, idx_in1, idx_in2, idx_out1, idx_out2):
-    '''Function for the integrand used in the HOM interferometry simulation.
-    :param mesh: The Neuroptica mesh under simulation
-    :param idx_in1: Waveguide index of the first input path
-    :param idx_in2: Waveguide index of the second input path
-    :param idx_out1: Waveguide index of the first output path
-    :param idx_out2: Waveguide index of the second output path
-    '''
-    #Get transfer matrix
-    transfer = mesh.get_transfer_matrix()
-
-    #Evaluate visiblity
-    term1 = transfer[idx_in1,idx_out2]*(transfer[idx_in1,idx_out2].conj())*transfer[idx_in2,idx_out1]*(transfer[idx_in2,idx_out1].conj())
-    term2 = transfer[idx_in1,idx_out1]*(transfer[idx_in1,idx_out1].conj())*transfer[idx_in2,idx_out2]*(transfer[idx_in2,idx_out2].conj())
-    term3 = (transfer[idx_in1,idx_out1].conj())*(transfer[idx_in2,idx_out2].conj())*transfer[idx_in1,idx_out2]*transfer[idx_in2,idx_out1]
-    term4 = (transfer[idx_in1,idx_out2].conj())*(transfer[idx_in2,idx_out1].conj())*transfer[idx_in1,idx_out1]*transfer[idx_in2,idx_out2]
-
-    coinc_max = term1 + term2
-    coinc_min = term1 + term2 + term3 + term4
-    
-    visib = (coinc_max-coinc_min)/coinc_max
-    
-    return visib
-
-def fidelity(mesh):
-    #Get ideal matrix U and lossy/uncertain matrix T
-    U = mesh.get_transfer_matrix(add_uncertainties=False, add_loss=False)
-    T = mesh.get_transfer_matrix()
-
-    #Calculate hermitian conjugates
-    U_H = U.conj().T
-    T_H = T.conj().T
-
-    #Calculate fidelity
-    fidel = abs(np.trace(U_H@T)/np.sqrt(np.trace(U_H@U)*np.trace(T_H@T)))**2
-    return fidel
+from metrics import visibility
 
 def main():
     timer = TicToc()
@@ -98,9 +63,9 @@ def main():
             cmap='gist_heat'
 
             #Plotting code from ONN_Simulation_Class.py
-            labels_size = 30
+            labels_size = 14
             legend_size = 30
-            tick_size = 28
+            tick_size = 12
             contour_color = (0.36, 0.54, 0.66)
             contour_color2 = 'black'
             contour_linewidth = 3.5
@@ -122,18 +87,18 @@ def main():
             ax.tick_params(axis='both', which='minor', labelsize=tick_size)
             ax.tick_params(axis='both', which='major', labelsize=tick_size)
 
-            plt.xlabel(r'$\theta$ Uncertainty (rad)', fontsize=labels_size)
-            plt.ylabel(r'$\phi$ Uncertainty(rad)', fontsize=labels_size)
+            plt.xlabel(r'Standard Deviation of $\theta$ (rad)', fontsize=labels_size)
+            plt.ylabel(r'Standard Deviation of $\phi$ (rad)', fontsize=labels_size)
             cbar = plt.colorbar()
             cbar.ax.tick_params(labelsize=tick_size)
             cbar.set_label('Visibility', fontsize=labels_size)
             # plt.title(f'{self.N}$\\times${self.N} {self.topology}', fontsize=labels_size)
             plt.tight_layout()
 
-            plt.savefig(f'figures_set1/visibility_vs_random_phases_Clements_1000samples_MZI_{n}.png')
+            plt.savefig(f'figures_set1/Update November 19/Clements Mesh/visibility_vs_phase_sd_Clements_1000samples_MZI_{n}.png')
 
             #Save Data
-            np.savetxt(f'figures_set1/visibiity_vs_random_phases_Clements_1000samples_MZI_{n}.txt',visibs)
+            np.savetxt(f'figures_set1/Update November 19/Clements Mesh/visibiity_vs_phase_sd_Clements_1000samples_MZI_{n}.txt',visibs)
             
             mzi.theta = np.pi #Restore bar state to MZI under test
             mzi.phi = np.pi

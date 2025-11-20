@@ -30,7 +30,8 @@ def main():
     n_dB = int(max_dB/step_size_dB) + 1
     losses_dB = np.linspace(0,max_dB,n_dB)
 
-    fidels = np.loadtxt(f'figures_set1/Update October 26/Clements_8x8_fidelity_vs_random_loss_1000_samples_loss_diff_002.txt')
+    fidels_clem = np.loadtxt(f'figures_set1/Update October 26/Clements_8x8_fidelity_vs_random_loss_1000_samples_loss_diff_002.txt')
+    fidels_reck = np.loadtxt(f'figures_set1/Update November 6/Reck_8x8_fidelity_vs_random_loss_1000_samples_loss_diff_002.txt')
 
     #Plotting code from ONN_Simulation_Class.py
     labels_size = 14
@@ -48,19 +49,20 @@ def main():
 
     # Plot Loss + Phase uncert accuracies
     # plt.pcolor(self.loss_dB, self.phase_uncert_theta, self.accuracy_LPU, vmin=100/(self.N+1)*0, vmax=100, cmap=cmap, rasterized=True)
-    plt.figure(figsize=(6.95, 5.03)) # compress the graph (around) quarter in size, by cutting top half and compress horizontally
-    plt.plot(losses_dB,fidels)
-
+    plt.figure(figsize=(6.95/2, 5.03/2)) # compress the graph (around) quarter in size, by cutting top half and compress horizontally
+    plt.plot(losses_dB,fidels_clem,'rv-',label="Clements Mesh")
+    plt.plot(losses_dB,fidels_reck,"b^-",label="Reck Mesh")
     
     ax = plt.gca()
-    ax.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
-    ax.xaxis.set_major_formatter(FormatStrFormatter('%.4f'))
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
     ax.tick_params(axis='both', which='minor', labelsize=tick_size)
     ax.tick_params(axis='both', which='major', labelsize=tick_size)
 
     plt.xlabel('Mean Loss(dB)', fontsize=labels_size)
     plt.ylabel(r'Fidelity', fontsize=labels_size)
-    #ax.legend()
+    plt.ylim(0.9,1)
+    #ax.legend(loc='lower left')
     #cbar = plt.colorbar()
     #cbar.ax.tick_params(labelsize=tick_size)
     #cbar.set_label('Fidelity', fontsize=labels_size)
@@ -69,7 +71,7 @@ def main():
     #plt.show()
 
 
-    plt.savefig(f'figures_set1/Update October 26/Clements_8x8_fidelity_vs_random_loss_1000_samples_loss_diff_002_V2.png')
+    plt.savefig(f'figures_set1/Update November 6/8x8_fidelity_vs_random_loss_1000_samples_loss_diff_002_inset.png')
 
 if __name__ == "__main__":
     main()
