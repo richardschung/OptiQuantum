@@ -3,7 +3,7 @@ import numpy as np
 def HOM_simple(mesh, idx_in1, idx_in2, idx_out1, idx_out2, tau, sigma):
     '''Function for HOM coincidence probability without integration.
     Fails when transfer matrices have strong frequency dependence
-    :param mesh: The Neuroptica mesh under simulation
+    :param mesh: The matrix or Neuroptica mesh under simulation
     :param idx_in1: Waveguide index of the first input path
     :param idx_in2: Waveguide index of the second input path
     :param idx_out1: Waveguide index of the first output path
@@ -12,7 +12,10 @@ def HOM_simple(mesh, idx_in1, idx_in2, idx_out1, idx_out2, tau, sigma):
     :param sigma: Standard deviation of the photon mean frequency
     '''
     #Get transfer matrix
-    transfer = mesh.get_transfer_matrix()
+    if isinstance(mesh,np.ndarray):
+        transfer = mesh
+    else:
+        transfer = mesh.get_transfer_matrix()
 
     #Evaluate visiblity
     term1 = transfer[idx_out1,idx_in2]*(transfer[idx_out1,idx_in2].conj())*transfer[idx_out2,idx_in1]*(transfer[idx_out2,idx_in1].conj())
@@ -27,14 +30,17 @@ def HOM_simple(mesh, idx_in1, idx_in2, idx_out1, idx_out2, tau, sigma):
 
 def visibility(mesh, idx_in1, idx_in2, idx_out1, idx_out2):
     '''Function for calculating HOM visibility.
-    :param mesh: The Neuroptica mesh under simulation
+    :param mesh: The matrix or Neuroptica mesh under simulation
     :param idx_in1: Waveguide index of the first input path
     :param idx_in2: Waveguide index of the second input path
     :param idx_out1: Waveguide index of the first output path
     :param idx_out2: Waveguide index of the second output path
     '''
     #Get transfer matrix
-    transfer = mesh.get_transfer_matrix()
+    if isinstance(mesh,np.ndarray):
+        transfer = mesh
+    else:
+        transfer = mesh.get_transfer_matrix()
 
     #Evaluate visiblity
     term1 = transfer[idx_out1,idx_in2]*(transfer[idx_out1,idx_in2].conj())*transfer[idx_out2,idx_in1]*(transfer[idx_out2,idx_in1].conj())
@@ -50,12 +56,23 @@ def visibility(mesh, idx_in1, idx_in2, idx_out1, idx_out2):
     return visib
 
 def fidelity(mesh, ideal = None):
+    '''Function for calculating circuit fidelity
+    :param mesh: The matrix or Neuroptica mesh under simulation
+    :param ideal: The ideal unitary matrix.  Must not be None if mesh is a matrix.
+    '''
     #Get ideal matrix U and lossy/uncertain matrix T
     if ideal is None:
+        if isinstance(mesh,np.ndarray):
+            raise ValueError("If transfer matrix is provided instead of mesh, ideal matrix must be provided.")
+        else:
+            T = mesh.get_transfer_matrix()
         U = mesh.get_transfer_matrix(add_uncertainties=False, add_loss=False)
     else:
+        if isinstance(mesh,np.ndarray):
+            T = mesh
+        else:
+            T = mesh.get_transfer_matrix()
         U = ideal
-    T = mesh.get_transfer_matrix()
 
     #Calculate hermitian conjugates
     U_H = U.conj().T
@@ -67,7 +84,7 @@ def fidelity(mesh, ideal = None):
 
 def transmittance(mesh, idx_in1, idx_in2, idx_out1, idx_out2, add_uncertainties=True, add_loss=False):
     '''Function for calculating biphoton transmittance.
-    :param mesh: The Neuroptica mesh under simulation
+    :param mesh: The matrix or Neuroptica mesh under simulation
     :param idx_in1: Waveguide index of the first input path
     :param idx_in2: Waveguide index of the second input path
     :param idx_out1: Waveguide index of the first output path

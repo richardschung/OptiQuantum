@@ -14,9 +14,10 @@ def main():
     n_phase = int(max_phase/step_size_phase) + 1
     phases = np.linspace(0,max_phase,n_phase)
 
-    for n in range(9):
+    for n in range(6):
 
-        visibs = np.loadtxt(f'figures_set1/Update November 19/Clements Mesh/visibility_vs_phase_sd_Clements_1000samples_MZI_{n+1}')
+        #visibs = np.loadtxt(f'figures_set1/Update November 19/Clements Mesh/visibiity_vs_phase_sd_Clements_1000samples_MZI_{n+1}.txt')
+        visibs = np.loadtxt(f'figures_set1/visibiity_vs_random_phases_Reck_1000samples_MZI_{n+1}.txt')
         cmap='gist_heat'
 
         #Plotting code from ONN_Simulation_Class.py
@@ -54,7 +55,9 @@ def main():
 
         #plt.show()
 
-        plt.savefig(f'figures_set1/Update November 19/Clements Mesh/visibility_vs_phase_sd_Clements_1000samples_MZI_{n+1}.png')
+        plt.savefig(f'figures_set1/Update November 19/Reck Mesh/visibility_vs_phase_sd_Reck_1000samples_MZI_{n+1}.png')
+
+        plt.clf()
 
 if __name__ == '__main__':
     main()
